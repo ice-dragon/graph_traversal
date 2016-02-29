@@ -29,6 +29,8 @@ int main()
 
 	TestGraphLoader(testGraph);
 	
+	std::cout << "All basic tests passed" << std::endl;
+
 	return 0;
 }
 
@@ -82,8 +84,6 @@ void TestGraphLoader(Graph& testGraph)
 	loadGraph(loadedGraph, "./graph_data.txt");
 
 	assert(testGraph == loadedGraph);
-
-	std::cout << "All basic tests passed" << std::endl;
 }
 
 void CreateTestGraph(Graph& testGraph)
