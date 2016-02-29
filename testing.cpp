@@ -9,7 +9,10 @@
 #include <functional>
 #include <iostream>
 
-
+void TestShortestPath(Graph&);
+void TestCycleFinder(Graph&);
+void TestCycleFinderOnNonCyclicGraph();
+void TestGraphLoader(Graph&);
 void CreateTestGraph(Graph&);
 void CreateNonCycleGraph(Graph&);
 
@@ -18,9 +21,23 @@ int main()
 	Graph testGraph;
 	CreateTestGraph(testGraph);
 	
-	ShortestPathFinder spf(-1);
+	TestShortestPath(testGraph);
 
-	testGraph.traverse(1, std::bind(&ShortestPathFinder::traverse, std::ref(spf), std::placeholders::_1));
+	TestCycleFinder(testGraph);
+
+	TestCycleFinderOnNonCyclicGraph();
+
+	TestGraphLoader(testGraph);
+	
+	return 0;
+}
+
+//Shortest path finder should find the shortest path between 1 and 5 which for the test graph is 1, 3, 4, 5
+void TestShortestPath(Graph& testGraph)
+{
+	ShortestPathFinder spf(1, -1);
+
+	testGraph.traverse(std::bind(&ShortestPathFinder::traverse, std::ref(spf), std::placeholders::_1));
 
 	assert(spf.isTargetFound(5));
 
@@ -33,37 +50,47 @@ int main()
 	{
 		assert(path[i] == test_path[i]);
 	}
+}
 
-	CycleFinder cf;
+//Cycle finder should find a cycle in the test graph
+void TestCycleFinder(Graph& testGraph)
+{
+	CycleFinder cf(1, -1);
 
-	testGraph.traverse(1, std::bind(&CycleFinder::traverse, std::ref(cf), std::placeholders::_1));
+	testGraph.traverse(std::bind(&CycleFinder::traverse, std::ref(cf), std::placeholders::_1));
 
 	assert(cf.isCycle());
+}
 
+//Cycle finder shouldn't find a cycle in the non cyclic graph
+void TestCycleFinderOnNonCyclicGraph()
+{
 	Graph nonCycleGraph;
 	CreateNonCycleGraph(nonCycleGraph);
 
-	CycleFinder cfNonCycle;
+	CycleFinder cfNonCycle(1, -1);
 
-	nonCycleGraph.traverse(1, std::bind(&CycleFinder::traverse, std::ref(cfNonCycle), std::placeholders::_1));
+	nonCycleGraph.traverse(std::bind(&CycleFinder::traverse, std::ref(cfNonCycle), std::placeholders::_1));
 
 	assert(!cfNonCycle.isCycle());
+}
 
+//load graph should produce a graph which is the same as the test graph from graph_data.txt
+void TestGraphLoader(Graph& testGraph)
+{
 	Graph loadedGraph;
 	loadGraph(loadedGraph, "./graph_data.txt");
 
 	assert(testGraph == loadedGraph);
 
 	std::cout << "All basic tests passed" << std::endl;
-	
-	return 0;
 }
 
 void CreateTestGraph(Graph& testGraph)
 {
 	for (int i = 1; i < 6; ++i)
 	{
-		testGraph.addNode(GraphNode(i, std::shared_ptr<GraphData>(nullptr)));
+		testGraph.addNode(GraphNode(i, nullptr));
 	}
 
 	testGraph.addEdge(1, 2);
@@ -77,7 +104,7 @@ void CreateNonCycleGraph(Graph& nonCycleGraph)
 {
 	for (int i = 1; i < 6; ++i)
 	{
-		nonCycleGraph.addNode(GraphNode(i, std::shared_ptr<GraphData>(nullptr)));
+		nonCycleGraph.addNode(GraphNode(i, nullptr));
 	}
 
 	nonCycleGraph.addEdge(1, 2);

@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <iostream>
 
+//Load a graph from a file
+//The format supported is a list of node ids with their associated data if any
+//followed by a list of edges in the format of startId->endId
 void loadGraph(Graph& graph, const std::string& filename, NodeDataLoader nodeDataLoader)
 {
 	std::ifstream file(filename);
@@ -30,6 +33,7 @@ void loadGraph(Graph& graph, const std::string& filename, NodeDataLoader nodeDat
 	}
 }
 
+//Extract the start node id and end node id from a line and add it to the graph
 void loadEdge(const std::string& line, int idxEdgeSeparator, Graph& graph)
 {
 	int from = atoi(line.substr(0, idxEdgeSeparator).c_str());
@@ -44,6 +48,7 @@ void loadEdge(const std::string& line, int idxEdgeSeparator, Graph& graph)
 	graph.addEdge(from, to);
 }
 
+//Extract a node id and data from a line
 void loadNode(const std::string& line, Graph& graph, NodeDataLoader nodeDataLoader)
 {
 	if (line.size() == 0)

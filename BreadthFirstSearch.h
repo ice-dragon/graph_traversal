@@ -5,17 +5,23 @@
 
 #include <unordered_map>
 
+//Base class for algorithms that need breadth first traversal
 class BreadthFirstSearch : public Traversal
 {
 protected:
 	int getNext();
 };
 
+//Shortest path search algorithm for unweighted graphs
 class ShortestPathFinder : public BreadthFirstSearch
 {
 public:
-	//Can use -1 to get the entire graph tree
-	ShortestPathFinder(int target) : m_target(target) {}
+	//Can use -1 for target to get the entire graph tree
+	ShortestPathFinder(int start, int target) 
+	{
+		m_initial = start; 
+		m_target = target; 
+	}
 
 	bool isTargetFound(int target) const { return m_parents.find(target) != m_parents.end(); }
 	std::vector<int> getTargetPath(int target) const;
@@ -23,13 +29,10 @@ public:
 
 protected:
 	void seen(int id, int parent);
-	bool finished() { return isTargetFound(m_target); }
 
 private:
 	using NodeMap = std::unordered_map<int, int>;
 	NodeMap m_parents;
-
-	int m_target;
 };
 
 #endif

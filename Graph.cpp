@@ -7,6 +7,7 @@ void Graph::addNode(const GraphNode& graphNode)
 	m_nodes[graphNode.id] = graphNode;
 }
 
+//Find the node that the edge starts at and add the end node to its list of nodes it connects to
 void Graph::addEdge(int id, int idTo)
 {
 	NodeMap::iterator it = m_nodes.find(id);
@@ -25,14 +26,20 @@ void Graph::addEdge(int id, int idTo)
 	it->second.edges.push_back(idTo);
 }
 
-void Graph::traverse(int idStart, TraversalFunction func)
+//Using the provided function traverse the graph.
+//The function takes a node and returns the next id.
+//When passed a node with id of 0 (which is invalid) the function should return the initial node id.
+//Then passing each subsequent node that it asks for until it returns a requested node id of -1
+void Graph::traverse(TraversalFunction func) const
 {
-	int idCurrent = idStart;
-	int idPrevious = 0;
+	int idCurrent = func(GraphNode(0, nullptr));
+	int idPrevious = 0;//Used for debugging, knowing where the invalid id came from helps a lot
+	//Possibly not that useful when the previous represents a leaf, and the algorithm
+	//has backtracked, but better than nothing.
 
 	while (idCurrent != -1)
 	{
-		NodeMap::iterator it = m_nodes.find(idCurrent);
+		NodeMap::const_iterator it = m_nodes.find(idCurrent);
 		if (it == m_nodes.end())
 		{
 			std::cout << "Traversal Error: Couldn't find node (" << idCurrent << ") from (" << idPrevious << ")" << std::endl;
@@ -43,6 +50,7 @@ void Graph::traverse(int idStart, TraversalFunction func)
 	}
 }
 
+//Compare 2 graphs. They are equal when they have the same number of nodes and each node in order is also equal
 bool Graph::operator==(const Graph& rhs) const
 {
 	if (m_nodes.size() != rhs.m_nodes.size())

@@ -8,10 +8,10 @@
 class Graph;
 struct GraphData;
 
-using NodeDataLoader = std::function<std::shared_ptr<GraphData>(const std::string&)>;
+using NodeDataLoader = std::function<GraphData*(const std::string&)>;
 
 void loadGraph(Graph& graph, const std::string& filename, 
-	NodeDataLoader nodeDataLoader=[](const std::string&){return std::shared_ptr<GraphData>(nullptr);});
+	NodeDataLoader nodeDataLoader=[](const std::string&){return nullptr;});
 void loadEdge(const std::string& line, int idxEdgeSeparator, Graph& graph);
 void loadNode(const std::string& line, Graph& graph, NodeDataLoader nodeDataLoader);
 

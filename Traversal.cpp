@@ -2,10 +2,14 @@
 
 #include "GraphNode.h"
 
-
+//Traverse the graph by adding all unseen nodes to a list of unseen nodes
+//then asking the derived algorithm for the next node
+//Allow the derived algorithm to react to finding nodes whether or not they are 
 int Traversal::traverse(const GraphNode& node)
 {
-	//add connections if not seen 
+	if (node.id == 0)
+		return m_initial;
+	//add connections to unprocessed if not seen 
 	for (auto i : node.edges)
 	{
 		if (m_seen.find(i) == m_seen.end())
@@ -16,11 +20,11 @@ int Traversal::traverse(const GraphNode& node)
 		}
 		else
 		{
-			alreadySeen(i);
+			alreadySeen(i, node.id);
 		}
 	}
 
-	if (finished())
+	if (node.id == m_target)
 		return -1;
 
 	int next = getNext();
