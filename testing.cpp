@@ -3,6 +3,8 @@
 #include "BreadthFirstSearch.h"
 #include "GraphNode.h"
 #include "GraphLoader.h"
+#include "ShortestPathFinder.h"
+#include "CycleFinder.h"
 
 #include <vector>
 #include <assert.h>

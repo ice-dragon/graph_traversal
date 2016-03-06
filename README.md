@@ -22,4 +22,4 @@ Or you can construct a Graph by using `Graph::addNode` and `Graph::addEdge`.
 
 Once constructed you can use `Graph::traverse` to traverse the graph. It takes something that it can use operator () passing a node and returning the id of the next node. `Graph::traverse` initially passes a node with id 0, and expects to receive the first node id in return. `Graph::traverse` stops when it gets a node id of -1.
 
-The basic depth first search and breadth first search are implementing using `Traverse` (from **Traverse.h/cpp**) and are available in **DepthFirstSearch.h/cpp** and **BreadthFirstSearch.h/cpp**. Also included in those files are the implementations of a shortest path finder and a cycle finder.
+The basic depth first search and breadth first search are implementing using `Traverse` (from **Traverse.h/cpp**) and are available in **DepthFirstSearch.h/cpp** and **BreadthFirstSearch.h/cpp**. As examples also included are the implementations of a shortest path finder and a cycle finder which use respectively breadth first search and depth first search.

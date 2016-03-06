@@ -3,8 +3,8 @@ CFLAGS  = -g -Wall -std=c++1y
 
 default: graph_test
 
-graph_test: testing.o BreadthFirstSearch.o DepthFirstSearch.o Graph.o Traversal.o GraphLoader.o
-	$(CC) $(CFLAGS) -o graph_test BreadthFirstSearch.o DepthFirstSearch.o Graph.o testing.o Traversal.o GraphLoader.o
+graph_test: testing.o BreadthFirstSearch.o DepthFirstSearch.o Graph.o Traversal.o GraphLoader.o ShortestPathFinder.o
+	$(CC) $(CFLAGS) -o graph_test BreadthFirstSearch.o DepthFirstSearch.o Graph.o testing.o Traversal.o GraphLoader.o ShortestPathFinder.o
 
 testing.o: testing.cpp BreadthFirstSearch.o DepthFirstSearch.o Graph.o
 	$(CC) $(CFLAGS) -c testing.cpp
@@ -17,6 +17,9 @@ DepthFirstSearch.o:  DepthFirstSearch.cpp DepthFirstSearch.h GraphNode.h Travers
 
 Traversal.o: Traversal.cpp Traversal.h GraphNode.h
 	$(CC) $(CFLAGS) -c Traversal.cpp
+
+ShortestPathFinder.o: BreadthFirstSearch.o ShortestPathFinder.h ShortestPathFinder.cpp
+	$(CC) $(CFLAGS) -c ShortestPathFinder.cpp	
 
 GraphLoader.o: GraphLoader.cpp GraphLoader.h Graph.o GraphNode.h
 	$(CC) $(CFLAGS) -c GraphLoader.cpp	
